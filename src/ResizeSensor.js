@@ -108,7 +108,7 @@
      *
      * @constructor
      */
-    var ResizeSensor = function(element, callback) {
+    var ResizeSensor = function(element, callback, opts) {
         //Is used when checking in reset() only for invisible elements
         var lastAnimationFrameForInvisibleCheck = 0;
 
@@ -147,7 +147,7 @@
          * @param {HTMLElement} element
          * @param {Function}    resized
          */
-        function attachResizeEvent(element, resized) {
+        function attachResizeEvent(element, resized, options) {
             if (!element) return;
             if (element.resizedAttached) {
                 element.resizedAttached.add(resized);
@@ -157,7 +157,9 @@
             element.resizedAttached = new EventQueue();
             element.resizedAttached.add(resized);
 
-            element.resizeSensor = document.createElement('div');
+            const tag = options ? options.tag || "div" : "div";
+
+            element.resizeSensor = document.createElement(tag);
             element.resizeSensor.dir = 'ltr';
             element.resizeSensor.className = 'resize-sensor';
 
@@ -182,19 +184,19 @@
 
             setStyle(element.resizeSensor, style);
 
-            var expand = document.createElement('div');
+            var expand = document.createElement(tag);
             expand.className = 'resize-sensor-expand';
             setStyle(expand, style);
 
-            var expandChild = document.createElement('div');
+            var expandChild = document.createElement(tag);
             setStyle(expandChild, styleChild);
             expand.appendChild(expandChild);
 
-            var shrink = document.createElement('div');
+            var shrink = document.createElement(tag);
             shrink.className = 'resize-sensor-shrink';
             setStyle(shrink, style);
 
-            var shrinkChild = document.createElement('div');
+            var shrinkChild = document.createElement(tag);
             setStyle(shrinkChild, styleChild);
             setStyle(shrinkChild, { width: '200%', height: '200%' });
             shrink.appendChild(shrinkChild);
@@ -300,7 +302,7 @@
         }
 
         forEachElement(element, function(elem){
-            attachResizeEvent(elem, callback);
+            attachResizeEvent(elem, callback, opts);
         });
 
         this.detach = function(ev) {

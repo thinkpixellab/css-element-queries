@@ -10,7 +10,7 @@ export declare class ResizeSensor {
      * Creates a new resize sensor on given elements. The provided callback is called max 1 times per requestAnimationFrame and
      * is called initially.
      */
-    constructor(element: Element | Element[], callback: ResizeSensorCallback);
+    constructor(element: Element | Element[], callback: ResizeSensorCallback, opts: any);
 
     /**
      * Removes the resize sensor, and stops listening to resize events.
